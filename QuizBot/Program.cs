@@ -158,6 +158,23 @@ correct: {question.CorrectAnswer},");
             return;
         }
 
+        if(callBackData == "Statistics")
+        {
+            var statistics = Database.Statistics;
+
+            foreach (var info in statistics)
+            {
+
+                await botClient.SendTextMessageAsync(chatId, @$"
+Id: {info.Id},
+User: {info.UserId},
+Result: {info.CorrectCount}/{info.TotalCount}");
+
+            }
+
+            return;
+        }
+
         if (callBackData == "Insert Test")
         {
             await botClient.SendTextMessageAsync(chatId, @$"enter your question!", replyMarkup: BackButton());
@@ -369,6 +386,17 @@ question: {nextQuestion.Question}",
                     await botClient.DeleteMessageAsync(chatId, message.MessageId);
 
                     int correctAnswer = Database.Answers.Where(x => x.Value == true).ToList().Count;
+
+                    var statistics = new StatisticsModel()
+                    {
+                        Id = new Random().Next(1, int.MaxValue),
+                        UserId = chatId,
+                        CorrectCount = correctAnswer,
+                        TotalCount = 5
+                    };
+
+                    //Database.Statistics.Add(statistics);
+                    Database.Statistics.Insert(0, statistics);  
 
                     await botClient.SendTextMessageAsync(chatId, $"Result:{correctAnswer}/5");
                  

@@ -117,6 +117,8 @@ namespace QuizBot.Data
             },
         };
 
+        public static List<StatisticsModel> Statistics = new List<StatisticsModel>();
+
         public static Dictionary<int, string> AssignedAnswers = new Dictionary<int, string>();
 
         public static Dictionary<int, bool?> Answers = new Dictionary<int, bool?>();
